@@ -1,0 +1,18 @@
+#!/usr/bin/bash
+
+target=$1
+
+[[ -z "$1" ]] && { echo "missing argument: target" ; exit 1; }
+
+systemctl daemon-reload
+
+systemctl start "$target.service"
+systemctl enable "$target.service"
+
+if nginx -t; then
+    echo command returned true
+    systemctl restart nginx
+
+else
+    echo nginx -t returned some error
+fi
